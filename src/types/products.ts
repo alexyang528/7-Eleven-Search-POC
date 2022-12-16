@@ -14,13 +14,13 @@ export interface Image {
 
 export interface Product {
 	name: string,
-	c_catalogType?: string,
-	c_category?: string,
-	c_handling?: string,
+	c_catalogTypes?: string[],
+	c_categories?: string[],
+	c_handling?: string[],
 	c_longDescription?: string,
-	c_size?: string,
-	c_subcategory?: string,
+	c_sizes?: string[],
+	c_subcategories?: string[],
 	c_thumbnail?: Image,
-	c_type?: string,
+	c_types?: string[],
 	id: string,
 }
