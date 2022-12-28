@@ -15,8 +15,8 @@ import {
   Result,
   useSearchState,
 } from "@yext/search-headless-react";
-import { ProductCard } from "./components/cards/ProductCard";
-import { Product } from "./types/products";
+import { ProductCard } from "../components/cards/ProductCard";
+import { Product } from "../types/products";
 import classnames from "classnames";
 import { provideSearchAnalytics } from "@yext/analytics"; // can also be imported as provideAnalytics
 import { useProdContext } from "./context/prodContext";
@@ -27,19 +27,14 @@ const entityPreviewSearcher = provideHeadless({
   experienceKey: "7-eleven-search-poc",
   locale: "en",
   headlessId: "entity-preview-searcher",
-  additionalQueryParams: { limit: '{"products": 4}' },
-});
-
-const searchAnalytics = provideSearchAnalytics({
-  experienceKey: "7-eleven-search-poc",
-  experienceVersion: "PRODUCTION",
-  businessId: 3878450, // this comes from the url of your Yext account
+  additionalQueryParams: { limit: '{"products": 4}', source: 'AUTOCOMPLETE'}
 });
 
 const App = (): JSX.Element => {
-  const query = useSearchState((state) => state.query.input);
-  const { isProdDetail, setIsProdDetail } = useProdContext();
-  const renderEntityPreviews: RenderEntityPreviews = (
+
+  const query = useSearchState(state => state.query.input);
+
+  const renderEntityPreviews : RenderEntityPreviews = (
     autocompleteLoading,
     verticalKeyToResults: Record<string, VerticalResultsData>,
     dropdownItemProps: {
@@ -58,17 +53,13 @@ const App = (): JSX.Element => {
 
     return productResults ? (
       <div
-        className={classnames("grid grid-cols-4 px-8 gap-8", {
-          "opacity-50": autocompleteLoading,
-        })}
+        className={classnames("grid grid-cols-4 px-8 gap-8", {"opacity-50": autocompleteLoading})}
       >
         {productResults.map((result, i) => (
           <DropdownItem
             key={result.rawData.id}
             value={result.rawData.name}
-            onClick={() =>
-              history.pushState(null, "", `/product/${result.rawData.id}`)
-            }
+            onClick={() => history.pushState(null, "", `/product/${result.rawData.id}`)}
             ariaLabel={dropdownItemProps.ariaLabel}
           >
             <ProductCard result={result} />
