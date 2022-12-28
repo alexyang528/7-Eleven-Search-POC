@@ -1,8 +1,8 @@
-import { Product } from "../../types/products";
+import { Link } from "react-router-dom";
 import { CardProps } from "@yext/search-ui-react";
 import { useSearchState } from "@yext/search-headless-react";
 import { provideSearchAnalytics } from "@yext/analytics";
-import { Link } from "react-router-dom";
+import { Product } from "../../types/products";
 
 
 const searchAnalytics = provideSearchAnalytics({

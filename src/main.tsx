@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { SearchHeadlessProvider, provideHeadless } from "@yext/search-headless-react";
-import App from "./pages/SearchResults";
+import SearchResults from "./pages/SearchResults";
 import ProductDetail from "./pages/ProductDetail";
 import "./index.css";
 
@@ -12,14 +12,13 @@ const searcher = provideHeadless({
   verticalKey: "products",
   locale: "en",
 });
-searcher.setSessionTrackingEnabled(true);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <SearchHeadlessProvider searcher={searcher}>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<App />} />
+          <Route path="/" element={<SearchResults />} />
           <Route path="/product/:id" element={<ProductDetail />} />
         </Routes>
       </BrowserRouter>

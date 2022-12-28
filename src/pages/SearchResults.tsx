@@ -1,3 +1,4 @@
+import classnames from "classnames";
 import {
   AppliedFilters,
   Pagination,
@@ -17,7 +18,6 @@ import {
 } from "@yext/search-headless-react";
 import { ProductCard } from "../components/cards/ProductCard";
 import { Product } from "../types/products";
-import classnames from "classnames";
 
 const entityPreviewSearcher = provideHeadless({
   apiKey: "184b8f65a7921212f4a09118718f3db9",
@@ -27,7 +27,7 @@ const entityPreviewSearcher = provideHeadless({
   additionalQueryParams: { limit: '{"products": 4}', source: 'AUTOCOMPLETE'}
 });
 
-const App = (): JSX.Element => {
+const SearchResults = (): JSX.Element => {
 
   const query = useSearchState(state => state.query.input);
 
@@ -81,8 +81,13 @@ const App = (): JSX.Element => {
           <StandardFacets customCssClasses={{ standardFacetsContainer: "min-w-[200px]" }} />
           <div className="flex-col">
             <ResultsCount customCssClasses={{ resultsCountContainer:"" }}/>
-            <AppliedFilters customCssClasses={{ clearAllButton:"hidden", appliedFiltersContainer:"pb-4" }}/>
-            <VerticalResults CardComponent={ProductCard} customCssClasses={{ verticalResultsContainer:"grid grid-cols-4 gap-4 pb-4" }}/>
+            <AppliedFilters
+              customCssClasses={{ clearAllButton:"hidden", appliedFiltersContainer:"pb-4" }}
+            />
+            <VerticalResults
+              CardComponent={ProductCard}
+              customCssClasses={{ verticalResultsContainer:"grid grid-cols-4 gap-4 pb-4" }}
+            />
             <Pagination />
           </div>
         </div>
@@ -91,4 +96,4 @@ const App = (): JSX.Element => {
   );
 };
 
-export default App;
+export default SearchResults;
