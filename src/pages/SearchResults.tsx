@@ -18,9 +18,6 @@ import {
 import { ProductCard } from "../components/cards/ProductCard";
 import { Product } from "../types/products";
 import classnames from "classnames";
-import { provideSearchAnalytics } from "@yext/analytics"; // can also be imported as provideAnalytics
-import { useProdContext } from "./context/prodContext";
-import { useEffect } from "react";
 
 const entityPreviewSearcher = provideHeadless({
   apiKey: "184b8f65a7921212f4a09118718f3db9",
@@ -46,10 +43,10 @@ const App = (): JSX.Element => {
       ariaLabel: (value: string) => string;
     }
   ): JSX.Element | null => {
+    
     if (!query) return null;
 
-    const productResults = verticalKeyToResults["products"]
-      ?.results as unknown as Result<Product>[];
+    const productResults = verticalKeyToResults["products"]?.results as unknown as Result<Product>[];
 
     return productResults ? (
       <div
@@ -59,7 +56,6 @@ const App = (): JSX.Element => {
           <DropdownItem
             key={result.rawData.id}
             value={result.rawData.name}
-            onClick={() => history.pushState(null, "", `/product/${result.rawData.id}`)}
             ariaLabel={dropdownItemProps.ariaLabel}
           >
             <ProductCard result={result} />
@@ -68,44 +64,25 @@ const App = (): JSX.Element => {
       </div>
     ) : null;
   };
-  useEffect(() => {
-    !isProdDetail && setIsProdDetail(false);
-  });
+
   return (
     <div className="flex justify-center px-4 py-6">
-      <div className="w-full max-w-7xl home">
-        {!isProdDetail && (
-          <SearchBar
-            visualAutocompleteConfig={{
+      <div className="w-full max-w-7xl">
+        <SearchBar
+          visualAutocompleteConfig={{
               entityPreviewSearcher: entityPreviewSearcher,
               includedVerticals: ["products"],
               renderEntityPreviews: renderEntityPreviews,
               universalLimit: { products: 4 },
               entityPreviewsDebouncingTime: 500,
-            }}
-          />
-        )}
+          }}
+        />
         <div className="flex gap-16 pb-8">
-          <StandardFacets
-            customCssClasses={{
-              standardFacetsContainer: "min-w-[200px]  hidden md:block",
-            }}
-          />
+          <StandardFacets customCssClasses={{ standardFacetsContainer: "min-w-[200px]" }} />
           <div className="flex-col">
-            <ResultsCount customCssClasses={{ resultsCountContainer: "" }} />
-            <AppliedFilters
-              customCssClasses={{
-                clearAllButton: "hidden",
-                appliedFiltersContainer: "pb-4",
-              }}
-            />
-            <VerticalResults
-              CardComponent={ProductCard}
-              customCssClasses={{
-                verticalResultsContainer:
-                  "grid grid-cols-1 md:grid-cols-4 md:gap-4 md:pb-4",
-              }}
-            />
+            <ResultsCount customCssClasses={{ resultsCountContainer:"" }}/>
+            <AppliedFilters customCssClasses={{ clearAllButton:"hidden", appliedFiltersContainer:"pb-4" }}/>
+            <VerticalResults CardComponent={ProductCard} customCssClasses={{ verticalResultsContainer:"grid grid-cols-4 gap-4 pb-4" }}/>
             <Pagination />
           </div>
         </div>

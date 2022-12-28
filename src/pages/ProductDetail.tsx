@@ -1,14 +1,13 @@
-import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import { useProdContext } from "../context/prodContext";
+import { Link, useParams, useLocation } from "react-router-dom";
 import { Product } from "../types/products";
+
 export type ParamTypes = {
   id: string;
 };
+
 const ProductDetail = () => {
+  const location = useLocation();
   const { id } = useParams<ParamTypes>();
-  const [data, setData] = useState<any>();
-  const { isProdDetail, setIsProdDetail } = useProdContext();
   const fetchProduct = async () => {
     try {
       const response = await fetch(
@@ -17,36 +16,35 @@ const ProductDetail = () => {
 
       const responseJson = await response.json();
       const resultData: Product = responseJson.response;
-      console.log(JSON.stringify(resultData));
-      setData(await resultData);
-      setIsProdDetail(true);
+      return resultData;
     } catch (err) {
       console.log(err);
     }
   };
-  useEffect(() => {
-    fetchProduct();
-  }, [id]);
+
+  // Either fetch the product passed from the results page, or make a Live API request
+  const product = location.state.product ? location.state.product : fetchProduct();
+  
   return (
     <>
-      {data && (
+      {product && (
         <>
           <div className="max-w-7xl mx-auto p-8">
-            <Link to="/" className="border p-2 bg-blue-300	mb-8">
+            <Link to="/" className="border rounded-lg p-2 shadow-md hover:shadow-lg">
               Back
             </Link>
-            <div className="flex mt-4">
-              <div className="border mr-8">
-                <img src={data.c_thumbnail.url} alt="" />
+            <div className="flex mt-8">
+              <div className="mr-8">
+                <img className="h-80 w-80" src={product.c_thumbnail.url} alt="" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold">{data.name}</h1>
-                <p className="mt-4">{data.c_longDescription}</p>
-                {data.c_categories && (
+                <h1 className="text-2xl font-bold">{product.name}</h1>
+                <p className="mt-4">{product.c_longDescription}</p>
+                {product.c_categories && (
                   <div className="mt-4">
                     <span className="font-bold">Categories: </span>
                     <ul className="ml-4">
-                      {data.c_categories.map((item: any, index: number) => (
+                      {product.c_categories.map((item: any, index: number) => (
                         <li className="list-disc ml-4" key={index}>
                           {item}
                         </li>
@@ -54,11 +52,11 @@ const ProductDetail = () => {
                     </ul>
                   </div>
                 )}
-                {data.c_sizes && (
+                {product.c_sizes && (
                   <div className="mt-4">
                     <span className="font-bold">Sizes: </span>
                     <ul className="ml-4">
-                      {data.c_sizes.map((item: any, index: number) => (
+                      {product.c_sizes.map((item: any, index: number) => (
                         <li className="list-disc ml-4" key={index}>
                           {item}
                         </li>
@@ -66,11 +64,11 @@ const ProductDetail = () => {
                     </ul>
                   </div>
                 )}
-                {data.c_subcategories && (
+                {product.c_subcategories && (
                   <div className="mt-4">
                     <span className="font-bold">Subcategories: </span>
                     <ul className="ml-4">
-                      {data.c_subcategories.map((item: any, index: number) => (
+                      {product.c_subcategories.map((item: any, index: number) => (
                         <li className="list-disc ml-4" key={index}>
                           {item}
                         </li>
