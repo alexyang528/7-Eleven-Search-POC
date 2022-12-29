@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { Link, useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { Product } from "../types/products";
+import { useEffect, useState } from "react";
 
 export type ParamTypes = {
   id: string;
@@ -8,21 +8,37 @@ export type ParamTypes = {
 
 const ProductDetail = () => {
   const location = useLocation();
-  const product: Product = location.state.product;
+  const navigate = useNavigate();
 
-  // TODO: Request Live API for product profile if not passed as part of location state
+  const { id } = useParams<ParamTypes>();
+  const [product, setProduct] = useState<Product | null>();
+  const fetchProduct = async () => {
+    if (location.state?.product) {
+      setProduct(location.state?.product);
+      return;
+    }
+    const response = await fetch(
+      `https://liveapi.yext.com/v2/accounts/me/entities/${id}?api_key=cef2e01bba90e91f8dd9c6dbd621724c&v=20220101`
+    );
+    const data = await response.json();
+    setProduct(data.response);
+  };
+
+  useEffect(() => {
+    fetchProduct();
+  }, [id]);
 
   return (
     <>
       {product && (
         <>
           <div className="max-w-7xl mx-auto p-8">
-            <Link
-              to="/"
+            <button
               className="border rounded-lg p-2 shadow-md hover:shadow-lg"
+              onClick={() => navigate(-1)}
             >
               Back
-            </Link>
+            </button>
             <div className="flex mt-8">
               <div className="mr-8">
                 <img
