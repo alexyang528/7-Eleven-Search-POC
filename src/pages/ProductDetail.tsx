@@ -11,17 +11,23 @@ const ProductDetail = () => {
   const navigate = useNavigate();
 
   const { id } = useParams<ParamTypes>();
-  const [product, setProduct] = useState<Product | null>();
+  const [product, setProduct] = useState<Product | null>(
+    location.state?.product
+  );
   const fetchProduct = async () => {
     if (location.state?.product) {
       setProduct(location.state?.product);
       return;
     }
-    const response = await fetch(
-      `https://liveapi.yext.com/v2/accounts/me/entities/${id}?api_key=cef2e01bba90e91f8dd9c6dbd621724c&v=20220101`
-    );
-    const data = await response.json();
-    setProduct(data.response);
+    try {
+      const response = await fetch(
+        `https://liveapi.yext.com/v2/accounts/me/entities/${id}?api_key=cef2e01bba90e91f8dd9c6dbd621724c&v=20220101`
+      );
+      const data = await response.json();
+      setProduct(data.response);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   useEffect(() => {
