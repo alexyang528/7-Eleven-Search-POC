@@ -1,6 +1,6 @@
 import React from "react";
-import ReactDOM from "react-dom/client";
-import { BrowserRouter, RouterProvider, Routes, Route } from "react-router-dom";
+import { render } from "react-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import {
   SearchHeadlessProvider,
   provideHeadless,
@@ -16,7 +16,8 @@ const searcher = provideHeadless({
   locale: "en",
 });
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
+const root = document.getElementById("root");
+render(
   <React.StrictMode>
     <SearchHeadlessProvider searcher={searcher}>
       <BrowserRouter>
@@ -26,5 +27,6 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         </Routes>
       </BrowserRouter>
     </SearchHeadlessProvider>
-  </React.StrictMode>
+  </React.StrictMode>,
+  root
 );
