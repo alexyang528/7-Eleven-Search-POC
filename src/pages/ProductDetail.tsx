@@ -45,14 +45,12 @@ const ProductDetail = () => {
             >
               Back
             </button>
-            <div className="flex mt-8">
-              <div className="mr-8">
-                <img
-                  className="h-80 w-80"
-                  src={product.c_thumbnail?.url}
-                  alt=""
-                />
-              </div>
+            <div className="flex flex-row mt-8 gap-8">
+              <img
+                className="float-left w-[200px] h-[200px] object-cover"
+                src={product.c_thumbnail?.url}
+                alt=""
+              />
               <div>
                 <h1 className="text-2xl font-bold">{product.name}</h1>
                 <p className="mt-4">{product.c_longDescription}</p>
