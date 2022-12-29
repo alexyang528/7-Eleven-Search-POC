@@ -1,7 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { SearchHeadlessProvider, provideHeadless } from "@yext/search-headless-react";
+import {
+  SearchHeadlessProvider,
+  provideHeadless,
+} from "@yext/search-headless-react";
 import SearchResults from "./pages/SearchResults";
 import ProductDetail from "./pages/ProductDetail";
 import "./index.css";

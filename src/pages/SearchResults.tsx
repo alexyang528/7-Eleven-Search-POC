@@ -24,14 +24,13 @@ const entityPreviewSearcher = provideHeadless({
   experienceKey: "7-eleven-search-poc",
   locale: "en",
   headlessId: "entity-preview-searcher",
-  additionalQueryParams: { limit: '{"products": 4}', source: 'AUTOCOMPLETE'}
+  additionalQueryParams: { limit: '{"products": 4}', source: "AUTOCOMPLETE" },
 });
 
 const SearchResults = (): JSX.Element => {
+  const query = useSearchState((state) => state.query.input);
 
-  const query = useSearchState(state => state.query.input);
-
-  const renderEntityPreviews : RenderEntityPreviews = (
+  const renderEntityPreviews: RenderEntityPreviews = (
     autocompleteLoading,
     verticalKeyToResults: Record<string, VerticalResultsData>,
     dropdownItemProps: {
@@ -43,14 +42,16 @@ const SearchResults = (): JSX.Element => {
       ariaLabel: (value: string) => string;
     }
   ): JSX.Element | null => {
-    
     if (!query) return null;
 
-    const productResults = verticalKeyToResults["products"]?.results as unknown as Result<Product>[];
+    const productResults = verticalKeyToResults["products"]
+      ?.results as unknown as Result<Product>[];
 
     return productResults ? (
       <div
-        className={classnames("grid grid-cols-4 px-8 gap-8", {"opacity-50": autocompleteLoading})}
+        className={classnames("grid grid-cols-4 px-8 gap-8", {
+          "opacity-50": autocompleteLoading,
+        })}
       >
         {productResults.map((result, i) => (
           <DropdownItem
@@ -70,23 +71,30 @@ const SearchResults = (): JSX.Element => {
       <div className="w-full max-w-7xl">
         <SearchBar
           visualAutocompleteConfig={{
-              entityPreviewSearcher: entityPreviewSearcher,
-              includedVerticals: ["products"],
-              renderEntityPreviews: renderEntityPreviews,
-              universalLimit: { products: 4 },
-              entityPreviewsDebouncingTime: 500,
+            entityPreviewSearcher: entityPreviewSearcher,
+            includedVerticals: ["products"],
+            renderEntityPreviews: renderEntityPreviews,
+            universalLimit: { products: 4 },
+            entityPreviewsDebouncingTime: 500,
           }}
         />
         <div className="flex gap-16 pb-8">
-          <StandardFacets customCssClasses={{ standardFacetsContainer: "min-w-[200px]" }} />
+          <StandardFacets
+            customCssClasses={{ standardFacetsContainer: "min-w-[200px]" }}
+          />
           <div className="flex-col">
-            <ResultsCount customCssClasses={{ resultsCountContainer:"" }}/>
+            <ResultsCount customCssClasses={{ resultsCountContainer: "" }} />
             <AppliedFilters
-              customCssClasses={{ clearAllButton:"hidden", appliedFiltersContainer:"pb-4" }}
+              customCssClasses={{
+                clearAllButton: "hidden",
+                appliedFiltersContainer: "pb-4",
+              }}
             />
             <VerticalResults
               CardComponent={ProductCard}
-              customCssClasses={{ verticalResultsContainer:"grid grid-cols-4 gap-4 pb-4" }}
+              customCssClasses={{
+                verticalResultsContainer: "grid grid-cols-4 gap-4 pb-4",
+              }}
             />
             <Pagination />
           </div>
