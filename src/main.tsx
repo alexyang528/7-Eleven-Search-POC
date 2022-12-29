@@ -1,6 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  createRoutesFromElements,
+  Route,
+} from "react-router-dom";
 import {
   SearchHeadlessProvider,
   provideHeadless,
@@ -16,15 +21,17 @@ const searcher = provideHeadless({
   locale: "en",
 });
 
+const router = createBrowserRouter(
+  createRoutesFromElements([
+    <Route path="/" element={<SearchResults />} />,
+    <Route path="product/:id" element={<ProductDetail />} />,
+  ])
+);
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <SearchHeadlessProvider searcher={searcher}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<SearchResults />} />
-          <Route path="/product/:id" element={<ProductDetail />} />
-        </Routes>
-      </BrowserRouter>
+      <RouterProvider router={router} />
     </SearchHeadlessProvider>
   </React.StrictMode>
 );
