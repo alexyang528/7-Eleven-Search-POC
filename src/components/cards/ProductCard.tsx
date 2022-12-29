@@ -32,7 +32,7 @@ export const ProductCard = ({ result }: CardProps<Product>): JSX.Element => {
             p-6 gap-4 h-90 cursor-pointer"
       onClick={() => fireClick(queryId!, product.id)}
     >
-      <div className="flex align-center justify-between">
+      <div className="flex align-center justify-center">
         <img className="h-48 w-48" src={product.c_thumbnail?.url} alt="" />
       </div>
       <div className="flex-col justify-between">
